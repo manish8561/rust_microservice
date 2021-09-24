@@ -1,0 +1,31 @@
+[package]
+name = "webservice"
+version = "0.1.0"
+edition = "2018"
+authors = ["manish sharma"]
+
+[lib]
+path = "src/lib.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "webservice"
+path = "src/main.rs"
+
+[dependencies]
+rocket = "0.4.10"
+rocket_codegen = "0.4.10"
+rocket_contrib = { version="0.4.10", features = ["handlebars_templates", "tera_templates"] }
+serde ={ version= "1.0.130", features = ["derive"] }
+tokio = { version = "1.11.0", features = ["full"] }
+dotenv = "0.15.0"
+lapin = "1.8.0"
+futures = "0.3"
+
+[dependencies.mongodb]
+version = "2.0.0"
+default-features = false
+features = ["sync"]
+
+
+

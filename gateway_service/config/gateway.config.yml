@@ -1,0 +1,88 @@
+http:
+  port: 8081
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  api:
+    host: localhost
+    paths: "/ip"
+  users:
+    paths: "/v1/users/*"
+  wallets:
+    paths: "/v1/wallets/*"
+  posts:
+    paths: "/v1/posts/*"
+  messages:
+    paths: "/v1/messages/*"
+  userrust:
+    path: "/v1/userrust/*"
+serviceEndpoints:
+  httpbin:
+    url: "https://httpbin.org"
+  users:
+    url: "http://20.10.11.3:3001"
+  wallets:
+    url: "http://20.10.11.4:3002"
+  posts:
+    url: "http://20.10.11.5:3003"
+  messages:
+    url: "http://20.10.11.6:7000"
+  userrust:
+    url: "http://20.10.11.10:3010"
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  default:
+    apiEndpoints:
+      - api
+    policies:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: httpbin
+              changeOrigin: true
+  users:
+    apiEndpoints:
+      - users
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: users
+  wallets:
+      apiEndpoints:
+        - wallets
+      policies:
+        - proxy:
+            - action:
+                serviceEndpoint: wallets
+  posts:
+      apiEndpoints:
+        - posts
+      policies:
+        - proxy:
+            - action:
+                serviceEndpoint: posts
+
+  messages:
+      apiEndpoints:
+        - messages
+      policies:
+        - proxy:
+            - action:
+                serviceEndpoint: messages
+  userrust:
+    apiEndpoints:
+      - userrust
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: userrust

@@ -1,0 +1,97 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+      "title": "Banter",
+      "description": " User Service",
+      "version": "1.0.0"
+    },
+    "operationId": "User",
+    "produces": [
+      "application/json"
+    ],
+    "paths": {
+      "/v1/users/user/uploadImage": {
+        "post": {
+          "x-swagger-router-controller": "home",
+          "operationId": "index",
+          "tags": [
+            "Users"
+          ],
+          "description": "Upload Image",
+          "parameters": [
+            {
+              "name": "file",
+              "in": "formData",
+              "type": "file",
+              "required": "true"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "400": {
+              "description": "Failed.."
+            }
+          }
+        }
+      },
+    
+      "/v1/users/user/updateProfile": {
+        "post": {
+          "tags": [
+            ""
+          ],
+          "summary": "Update user profile",
+          "requestBody": {
+            "description": "",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "founderRewardPercentage": {
+                        "type": "string"
+                      }
+                  },
+                  "example": {
+                    "user": "anter_1",
+                    "description": "Blockchain Developer",
+                    "image": "s3 bucker url",
+                    "founderRewardPercentage": "100"
+                  }
+                }
+              }
+            }
+          },
+          "parameters": [
+            {
+                "in": "header",
+                "name": "api-access-token",
+                "schema": {
+                  "type": "string"
+                }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      }
+    }
+  }

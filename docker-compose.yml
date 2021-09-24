@@ -1,0 +1,106 @@
+version: "2.0"
+services:
+  redis:
+    container_name: con_redis
+    ports:
+      - "0.0.0.0:6379:6379"
+    volumes:
+      - "/data2/dvolumes/prestoc/docker-redis:/data"
+    image: redis
+    networks:
+      - my_network
+  rabbitui:
+    container_name: con_rabbit
+    ports:
+      - "0.0.0.0:15672:15672"
+      - "0.0.0.0:5672:5672"
+    image: rabbitmq:3-management
+    restart: always
+    volumes:
+      - "/data2/dvolumes/prestoc/dockerrabbit:/var/lib/rabbitmq"
+    networks:
+      - my_network
+  user_rust_service:
+    hostname: user_rust_service
+    ports:
+      - "0.0.0.0:3010:3010"
+    container_name: user_rust_service
+    restart: always
+    build: ./user_rust_service
+    # env_file: ./config/user.env
+    environment:
+      - ROCKET_ENV=production
+    networks:
+      my_network:
+        ipv4_address: 20.10.11.10
+  message_service:
+    hostname: message_service
+    ports:
+      - "0.0.0.0:7000:7000"
+    container_name: message_service
+    restart: always
+    build: ./message_service
+    env_file: ./config/message.env
+    environment:
+      - NODE_ENV=dev
+    networks:
+      my_network:
+        ipv4_address: 20.10.11.6
+  post_service:
+    hostname: post_service
+    ports:
+      - "0.0.0.0:3003:3003"
+    container_name: post_service
+    restart: always
+    build: ./post_service
+    env_file: ./config/post.env
+    environment:
+      - NODE_ENV=dev
+    networks:
+      my_network:
+        ipv4_address: 20.10.11.5
+  wallet_service:
+    hostname: wallet_service
+    ports:
+      - "0.0.0.0:3002:3002"
+    container_name: wallet_service
+    restart: always
+    build: ./wallet_service
+    env_file: ./config/wallet.env
+    environment:
+      - NODE_ENV=dev
+    networks:
+      my_network:
+        ipv4_address: 20.10.11.4
+  user_service:
+    hostname: user_service
+    ports:
+      - "0.0.0.0:3001:3001"
+    container_name: user_service
+    restart: always
+    build: ./user_service
+    env_file: ./config/user.env
+    environment:
+      - NODE_ENV=dev
+    networks:
+      my_network:
+        ipv4_address: 20.10.11.3
+  gateway_service:
+    hostname: gateway_service
+    ports:
+      - "0.0.0.0:8081:8081"
+    container_name: gateway_service
+    build: ./gateway_service/
+    restart: always
+    networks:
+      my_network:
+        ipv4_address: 20.10.11.2
+networks:
+  my_network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      config:
+        - subnet: 20.10.11.0/16
+          gateway: 20.10.11.1
